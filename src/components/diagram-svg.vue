@@ -2,13 +2,14 @@
   <svg
     style="margin: 10px; border: 1px solid red"
     viewBox="0 0 150 180"
+    width="80"
     xmlns="http://www.w3.org/2000/svg">
     <diagram-svg-name
       :name="name"
       :font-size="fontSize"
       :fill="color"
       />
-    <g :color="color" :transform="`translate(0 ${fontSize + 2})`">
+    <g :color="color" :transform="`translate(0 ${fontSize})`">
       <diagram-svg-background :fret="startingFret" />
       <diagram-svg-tunning />
       <diagram-svg-string-marks :positions="positions" />
@@ -27,14 +28,9 @@ import diagramSvgStringMarks from '@/components/digram-svg/string-marks.vue'
 import diagramSvgPositions from '@/components/digram-svg/positions.vue'
 import { getStartingFret } from '@/components/chord.utils.ts'
 import { computed } from 'vue'
+import type { ChordDiagramConfig } from '@/components/chord.types'
 const fontSize = 28
-interface ChordDiagramConfig {
-  name: string // Am_7-5
-  positions: string
-  fingerings: string
-  tunning?: string
-  color?: string
-}
+
 const props = defineProps<ChordDiagramConfig>()
 
 const startingFret = computed(() => {

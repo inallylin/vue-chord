@@ -1,22 +1,47 @@
-import type { ChordFingering, ChordString } from "@/components/chord.types.ts"
+import type {
+  ChordDiagramNamePart,
+  ChordDiagramPosition,
+  ChordFingering,
+  ChordString
+} from "@/components/chord.types.ts"
 
-type PositionConfig = {
-  string: number
-  fret: number
+export const getChordNameWithSuper = (name: string) : ChordDiagramNamePart[] => {
+  const matches = name.match(/(\d.*)|(\w)/ig)
+  if (!matches?.length) {
+    return []
+  }
+  return matches.map((t) => {
+    return {
+      text: t,
+      super: /B|#|\d/i.test(t) ? true : false
+    }
+  })
 }
 
-// string names
+// ==============
+// Tunnings
+// ==
 
 const getDefaultTunnings = () : ChordString[] => {
   return ['E', 'A', 'D', 'G', 'B', 'e']
 }
 
+/**
+ * Validate tunnings, throw error when invalid
+ * @param {string} strStringName DADF#AD (valid)
+ * @param {string} strStringName EADGBz (invalid)
+ */
 const validateTunnings = (strStringName: string) => {
   if (!/^([A-G][#b\+-]?){6}$/igm.test(strStringName)) {
     throw new Error(`invalid character in ${strStringName}, only allow A-G, #b+-`)
   }
 }
 
+/**
+ * Get tunnings by context. When invalid, use default tunning
+ * @param {string} context DADF#AD (valid, with sharp/flat or +- sign)
+ * @returns ['D', 'A', 'D', 'F#', 'A', 'D']
+ */
 export const getTunnings = (context: string) : ChordString[] => {
   try {
     if (!context) {
@@ -34,23 +59,30 @@ export const getTunnings = (context: string) : ChordString[] => {
   }
 }
 
-// positions
+// ==============
+// Positions
+// ==
 
-const validatePosition = (strPositions: string) => {
+/**
+ * Validate positions, throw error when invalid
+ * @param {string} strPositions x32010 (valid)
+ * @param {string} strPositions x3023e (invalid)
+ */
+const validatePosition = (strPositions: string) : void => {
   if (!/^[\d|x]{6}$/im.test(strPositions)) {
     throw new Error('Invalid character for position, only allow string number and x')
   }
 }
 
 /**
- * Display open/mute string mark on diagram\
- * 0: mark as open string\
- * -1: mark as mute string\
+ * Define the open/mute string mark (o/x) on diagram\
+ * 0: mark as open string (o)\
+ * -1: mark as mute string (x)\
  * 1: no mark (show position on fingerboard)
- * @param string xx0232
- * @returns [-1, -1, 0, 1, 1, 1]
+ * @param {string} strPositions - xx0232
+ * @returns {Array} [-1, -1, 0, 1, 1, 1]
  */
-export const getPositionMarks = (strPositions: string) => {
+export const getPositionMarks = (strPositions: string) : (1 | -1 | 0)[] => {
   try {
     if (!strPositions) {
       throw new Error(`Empty position ${strPositions}`)
@@ -75,6 +107,16 @@ export const getPositionMarks = (strPositions: string) => {
   }
 }
 
+/**
+ * Get starting fret by positions\
+ * We're used to seeing guitar chord diagrams within three frets. 
+ * @param {string} strPositions - xx0454
+ * @returns {number} 3
+ * @param {string} strPositions - xx0231
+ * @returns {number} 0
+ * @param {string} strPositions - xx0999
+ * @returns {number} 8
+ */
 export const getStartingFret = (strPositions: string) : number => {
   try {
     validatePosition(strPositions)
@@ -103,7 +145,7 @@ export const getStartingFret = (strPositions: string) : number => {
   }
 }
 
-export const getDisplayPositions = (strPositions: string): PositionConfig[] => {
+export const getDisplayPositions = (strPositions: string): ChordDiagramPosition[] => {
   try {
     validatePosition(strPositions)
     if (!strPositions.match(/[1-9]/g)?.length) {
@@ -126,8 +168,8 @@ export const getDisplayPositions = (strPositions: string): PositionConfig[] => {
   }
 }
 
-export const getPositionFingering = (strFingerings: string, string: number) : ChordFingering | null => {
-  const fingering = strFingerings.split('')[6 - string]
+export const getFingeringByGuitarString = (strFingerings: string, guitarString: number) : ChordFingering | null => {
+  const fingering = strFingerings.split('')[6 - guitarString]
   // ignore - for display
   return /[T1234]/.test(fingering) ? (fingering as ChordFingering) : null
 }

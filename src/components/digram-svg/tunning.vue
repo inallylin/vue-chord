@@ -11,7 +11,7 @@
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { getTunnings } from '@/components/chord.utils.ts'
+import { getTunnings } from '@/components/chord.utils'
 
 const props = defineProps({
   tunning: {

@@ -14,15 +14,13 @@
     <g
       v-else-if="mark === -1"
       :transform="`translate(${20 * (i + 1)} 10)`">
-      <path d="M 1 1 l 8 8" stroke="currentColor" stroke-width="1"/>
-      <path d="M 9 1 l -8 8" stroke="currentColor" stroke-width="1"/>
+      <path d="M 1 1 l 8 8, M 9 1 l -8 8" stroke="currentColor" stroke-width="1"/>
     </g>
   </template>
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { getPositionMarks } from '../chord.utils';
-
+import { getPositionMarks } from '@/components/chord.utils'
 
 const props = defineProps({
   positions: {
