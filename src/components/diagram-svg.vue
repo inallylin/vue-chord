@@ -26,7 +26,7 @@ import diagramSvgName from '@/components/digram-svg/name.vue'
 import diagramSvgTunning from '@/components/digram-svg/tunning.vue'
 import diagramSvgStringMarks from '@/components/digram-svg/string-marks.vue'
 import diagramSvgPositions from '@/components/digram-svg/positions.vue'
-import { getStartingFret } from '@/components/chord.utils.ts'
+import { getStartingFret } from '@/components/chord'
 import { computed } from 'vue'
 import type { ChordDiagramConfig } from '@/components/chord.types'
 const fontSize = 28

@@ -20,7 +20,7 @@
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { getPositionMarks } from '@/components/chord.utils'
+import { getPositionMarks } from '@/components/chord'
 
 const props = defineProps({
   positions: {

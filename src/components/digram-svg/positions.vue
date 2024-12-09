@@ -47,7 +47,7 @@
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { getDisplayPositions, getFingeringByGuitarString, getStartingFret } from '@/components/chord.utils.ts'
+import { getDisplayPositions, getFingeringByGuitarString, getStartingFret } from '@/components/chord'
 import type { ChordDiagramPosition, ChordFingering, ChordPosition } from '../chord.types';
 
 type ChordPositionWithFinger = ChordDiagramPosition & {

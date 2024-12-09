@@ -20,7 +20,7 @@
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { getChordNameWithSuper } from '@/components/chord.utils'
+import { getChordNameWithSuper } from '@/components/chord'
 
 const props = defineProps({
   name: {
